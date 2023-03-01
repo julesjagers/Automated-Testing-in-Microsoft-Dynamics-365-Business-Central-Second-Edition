@@ -20,9 +20,9 @@ codeunit 80023 "Lookup value Rest. arch. sales"
 
         //[GIVEN] Number of series
         SerieNumber := CreateNoSeries();
-        //[GIVEN] Sales & Receivable setup with order numbers
+        //[GIVEN] Sales & receivable setup with order numbers
         CreateSalesSetupWithOrderNos(SerieNumber);
-        //[GIVEN] Lookup Value
+        //[GIVEN] Lookup value
         LookupValueCode := CreateLookupValueCode();
         //[GIVEN] New lookup value
         NewLookupValueCode := CreateLookupValueCode();
@@ -30,10 +30,10 @@ codeunit 80023 "Lookup value Rest. arch. sales"
         CreateDocumentWithLookupValue(SalesHeader, "Sales Document Type"::Order, LookupValueCode);
         //[GIVEN] Archived sales order with lookup value.
         CreateArchivedDocumentFromSalesDocument(SalesHeader."No.", "Sales Document Type"::Order);
-        //[GIVEN] Change Lookup value on sales order to new lookup value
+        //[GIVEN] Change lookup value on sales order to new lookup value
         ChangeLookupCodeForSalesDocument(SalesHeader."No.", NewLookupValueCode, "Sales Document Type"::Order);
 
-        //[WHEN] Restore archives sales order.
+        //[WHEN] Restore archived sales order.
         RestoreArchivedDocument(SalesHeader."No.", "Sales Document Type"::Order);
 
         //[THEN] Sales order has lookup value equal to lookup value from the archived sales order.
@@ -46,25 +46,25 @@ codeunit 80023 "Lookup value Rest. arch. sales"
     var
         SalesHeader: Record "Sales Header";
         ArchivedSalesNo: Code[20];
-        ChangedLookupValueCode: Code[20];
+        NewLookupValueCode: Code[20];
         SerieNumber: Code[20];
     begin
         //[SCENARIO #0009] Restore archived sales order without lookup value to sales order with lookup value.
 
         //[GIVEN] Number of series
         SerieNumber := CreateNoSeries();
-        //[GIVEN] Sales & Receivable setup with order numbers
+        //[GIVEN] Sales & receivable setup with order numbers
         CreateSalesSetupWithOrderNos(SerieNumber);
-        //[GIVEN] Lookup Value
-        ChangedLookupValueCode := CreateLookupValueCode();
+        //[GIVEN] Lookup value
+        NewLookupValueCode := CreateLookupValueCode();
         //[GIVEN] Sales order without lookup value.
         CreateDocumentWithoutLookupValue(SalesHeader, "Sales Document Type"::Order);
         //[GIVEN] Archived sales order with lookup value.
         CreateArchivedDocumentFromSalesDocument(SalesHeader."No.", "Sales Document Type"::Order);
-        //[GIVEN] Change Lookup value on sales order to new lookup value
-        ChangeLookupCodeForSalesDocument(SalesHeader."No.", ChangedLookupValueCode, "Sales Document Type"::Order);
+        //[GIVEN] Change lookup value on sales order to new lookup value
+        ChangeLookupCodeForSalesDocument(SalesHeader."No.", NewLookupValueCode, "Sales Document Type"::Order);
 
-        //[WHEN] Restore archives sales order.
+        //[WHEN] Restore archived sales order.
         RestoreArchivedDocument(SalesHeader."No.", "Sales Document Type"::Order);
 
         //[THEN] Sales order has lookup value equal to lookup value from the archived sales order.
@@ -85,24 +85,24 @@ codeunit 80023 "Lookup value Rest. arch. sales"
 
         //[GIVEN] Number of series
         SerieNumber := CreateNoSeries();
-        //[GIVEN] Sales & Receivable setup with order numbers
+        //[GIVEN] Sales & receivable setup with order numbers
         CreateSalesSetupWithOrderNos(SerieNumber);
-        //[GIVEN] Lookup Value
+        //[GIVEN] Lookup value
         LookupValueCode := CreateLookupValueCode();
-        //[GIVEN] NewLookUpValue
+        //[GIVEN] New lookUp value
         NewLookupValueCode := '';
         //[GIVEN] Sales order with lookup value.
-        CreateDocumentWithoutLookupValue(SalesHeader, "Sales Document Type"::Order);
+        CreateDocumentWithLookupValue(SalesHeader, "Sales Document Type"::Order, LookupValueCode);
         //[GIVEN] Archived sales order with lookup value.
         CreateArchivedDocumentFromSalesDocument(SalesHeader."No.", "Sales Document Type"::Order);
-        //[GIVEN] Change Lookup value on sales order to new lookup value
+        //[GIVEN] Change lookup value on sales order to new lookup value (empty)
         ChangeLookupCodeForSalesDocument(SalesHeader."No.", NewLookupValueCode, "Sales Document Type"::Order);
 
-        //[WHEN] Restore archives sales order.
+        //[WHEN] Restore archived sales order.
         RestoreArchivedDocument(SalesHeader."No.", "Sales Document Type"::Order);
 
         //[THEN] Sales order has lookup value equal to lookup value from the archived sales order.
-        VerifySalesHeaderLookupValueEqualsToArchivedLookupValue(SalesHeader."Lookup Value Code", NewLookupValueCode, "Sales Document Type"::Order);
+        VerifySalesHeaderLookupValueEqualsToArchivedLookupValue(SalesHeader."Lookup Value Code", LookupValueCode, "Sales Document Type"::Order);
     end;
 
     [HandlerFunctions('ConfirmArchiveNo,ConfirmArchived')]
@@ -116,26 +116,27 @@ codeunit 80023 "Lookup value Rest. arch. sales"
         SerieNumber: Code[20];
     begin
         //[SCENARIO #0011] Restore archived sales quote with lookup value to sales quote without lookup value.
+
         //[GIVEN] Number of series
         SerieNumber := CreateNoSeries();
-        //[GIVEN] Sales & Receivable setup with Quote numbers
+        //[GIVEN] Sales & receivable setup with quote numbers
         CreateSalesSetupWithQuoteNos(SerieNumber);
-        //[GIVEN] Lookup Value
+        //[GIVEN] Lookup value
         LookupValueCode := CreateLookupValueCode();
         //[GIVEN] New lookup value
         NewLookupCode := '';
         //[GIVEN] Sales quote with lookup value.
-        CreateDocumentWithoutLookupValue(SalesHeader, "Sales Document Type"::Quote);
+        CreateDocumentWithLookupValue(SalesHeader, "Sales Document Type"::"Quote", LookupValueCode);
         //[GIVEN] Archived sales quote with lookup value.
         CreateArchivedDocumentFromSalesDocument(SalesHeader."No.", "Sales Document Type"::Quote);
-        //[GIVEN] Change Lookup value on sales quote to new lookup value
+        //[GIVEN] Change lookup value on sales quote to new lookup value (empty)
         ChangeLookupCodeForSalesDocument(SalesHeader."No.", NewLookupCode, "Sales Document Type"::Quote);
 
-        //[WHEN] Restore archives sales quote.
+        //[WHEN] Restore archived sales quote.
         RestoreArchivedDocument(SalesHeader."No.", "Sales Document Type"::Quote);
 
         //[THEN] Sales quote has lookup value equal to lookup value from the archived sales quote.
-        VerifySalesHeaderLookupValueEqualsToArchivedLookupValue(SalesHeader."Lookup Value Code", NewLookupCode, "Sales Document Type"::Quote);
+        VerifySalesHeaderLookupValueEqualsToArchivedLookupValue(SalesHeader."Lookup Value Code", LookupValueCode, "Sales Document Type"::Quote);
     end;
 
     [HandlerFunctions('ConfirmArchiveNo,ConfirmArchived')]
@@ -152,23 +153,24 @@ codeunit 80023 "Lookup value Rest. arch. sales"
 
         //[GIVEN] Number of series
         SerieNumber := CreateNoSeries();
-        //[GIVEN] Sales & Receivable setup with blanket order numbers
+        //[GIVEN] Sales & receivable setup with blanket order numbers
         CreateSalesSetupWithInvoiceNos(SerieNumber);
-        //[GIVEN] Lookup Value
+        //[GIVEN] Lookup value
         LookupValueCode := CreateLookupValueCode();
+        //[GIVEN] New lookup value
         NewLookupValueCode := '';
         //[GIVEN] Sales invoice with lookup value.
-        CreateDocumentWithoutLookupValue(SalesHeader, "Sales Document Type"::Invoice);
+        CreateDocumentWithLookupValue(SalesHeader, "Sales Document Type"::Invoice, LookupValueCode);
         //[GIVEN] Archived sales invoice with lookup value.
         CreateArchivedDocumentFromSalesDocument(SalesHeader."No.", "Sales Document Type"::Invoice);
-        //[GIVEN] Change Lookup value on sales invoice to new lookup value
+        //[GIVEN] Change lookup value on sales invoice to new lookup value (empty)
         ChangeLookupCodeForSalesDocument(SalesHeader."No.", NewLookupValueCode, "Sales Document Type"::Invoice);
 
-        //[WHEN] Restore archives sales invoice.
+        //[WHEN] Restore archived sales invoice.
         RestoreArchivedDocument(SalesHeader."No.", "Sales Document Type"::Invoice);
 
         //[THEN] Sales invoice has lookup value equal to lookup value from the archived sales invoice.
-        VerifySalesHeaderLookupValueEqualsToArchivedLookupValue(SalesHeader."Lookup Value Code", NewLookupValueCode, "Sales Document Type"::Invoice);
+        VerifySalesHeaderLookupValueEqualsToArchivedLookupValue(SalesHeader."Lookup Value Code", LookupValueCode, "Sales Document Type"::Invoice);
     end;
 
     [HandlerFunctions('ConfirmArchiveNo,ConfirmArchived')]
@@ -181,28 +183,28 @@ codeunit 80023 "Lookup value Rest. arch. sales"
         NewLookupValueCode: Code[20];
         SerieNumber: Code[20];
     begin
-        //[SCENARIO #0013] Restore archived Blanket order with lookup value to blanket order without lookup value.
+        //[SCENARIO #0013] Restore archived blanket order with lookup value to blanket order without lookup value.
 
         //[GIVEN] Number of series
         SerieNumber := CreateNoSeries();
-        //[GIVEN] Sales & Receivable setup with blanket order numbers
+        //[GIVEN] Sales & receivable setup with blanket order numbers
         CreateSalesSetupWithBlanketOrderNos(SerieNumber);
-        //[GIVEN] Lookup Value
+        //[GIVEN] Lookup value
         LookupValueCode := CreateLookupValueCode();
-        //[GIVEN] New Lookup Value
+        //[GIVEN] New lookup value
         NewLookupValueCode := '';
         //[GIVEN] Blanket order with lookup value.
-        CreateDocumentWithoutLookupValue(SalesHeader, "Sales Document Type"::"Blanket Order");
-        //[GIVEN] Archived Blanket order with lookup value.
+        CreateDocumentWithLookupValue(SalesHeader, "Sales Document Type"::"Blanket Order", LookupValueCode);
+        //[GIVEN] Archived blanket order with lookup value.
         CreateArchivedDocumentFromSalesDocument(SalesHeader."No.", "Sales Document Type"::"Blanket Order");
-        //[GIVEN] Change Lookup value on Blanket order to new lookup value
+        //[GIVEN] Change Lookup value on blanket order to new lookup value (empty)
         ChangeLookupCodeForSalesDocument(SalesHeader."No.", NewLookupValueCode, "Sales Document Type"::"Blanket Order");
 
-        //[WHEN] Restore archives Blanket order.
+        //[WHEN] Restore archived blanket order.
         RestoreArchivedDocument(SalesHeader."No.", "Sales Document Type"::"Blanket Order");
 
         //[THEN] Blanket order has lookup value equal to lookup value from the archived Blanket order.
-        VerifySalesHeaderLookupValueEqualsToArchivedLookupValue(SalesHeader."Lookup Value Code", NewLookupValueCode, "Sales Document Type"::"Blanket Order");
+        VerifySalesHeaderLookupValueEqualsToArchivedLookupValue(SalesHeader."Lookup Value Code", LookupValueCode, "Sales Document Type"::"Blanket Order");
     end;
 
     [HandlerFunctions('ConfirmArchiveNo,ConfirmArchived')]
@@ -218,24 +220,24 @@ codeunit 80023 "Lookup value Rest. arch. sales"
         //[SCENARIO #0014] Restore archived return order with lookup value to return order without lookup value.
         //[GIVEN] Number of series
         SerieNumber := CreateNoSeries();
-        //[GIVEN] Sales & Receivable setup with return order numbers
+        //[GIVEN] Sales & receivable setup with return order numbers
         CreateSalesSetupWithReturnOrderNos(SerieNumber);
-        //[GIVEN] Lookup Value
+        //[GIVEN] Lookup value
         LookupValueCode := CreateLookupValueCode();
-        //[GIVEN] New Lookup value
+        //[GIVEN] New lookup value
         NewLookupValueCode := '';
         //[GIVEN] return order with lookup value.
-        CreateDocumentWithoutLookupValue(SalesHeader, "Sales Document Type"::"Return Order");
+        CreateDocumentWithLookupValue(SalesHeader, "Sales Document Type"::"Return Order", LookupValueCode);
         //[GIVEN] Archived return order with lookup value.
         CreateArchivedDocumentFromSalesDocument(SalesHeader."No.", "Sales Document Type"::"Return Order");
-        //[GIVEN] Change Lookup value on return order to new lookup value
+        //[GIVEN] Change lookup value on return order to new lookup value (empty)
         ChangeLookupCodeForSalesDocument(SalesHeader."No.", NewLookupValueCode, "Sales Document Type"::"Return Order");
 
-        //[WHEN] Restore archives return order.
+        //[WHEN] Restore archived return order.
         RestoreArchivedDocument(SalesHeader."No.", "Sales Document Type"::"Return Order");
 
-        //[THEN] return order has lookup value equal to lookup value from the archived return order.
-        VerifySalesHeaderLookupValueEqualsToArchivedLookupValue(SalesHeader."Lookup Value Code", NewLookupValueCode, "Sales Document Type"::"Return Order");
+        //[THEN] Return order has lookup value equal to lookup value from the archived return order.
+        VerifySalesHeaderLookupValueEqualsToArchivedLookupValue(SalesHeader."Lookup Value Code", LookupValueCode, "Sales Document Type"::"Return Order");
     end;
 
     local procedure VerifySalesHeaderLookupValueEqualsToArchivedLookupValue(ActualLookupValue: Code[20]; ExpectedLookupValue: Code[20]; DocumentType: Enum "Sales Document Type")
